@@ -591,6 +591,62 @@ logs"
              ('gradle 'android-gradle-uninstallDebug)
              ('maven 'android-maven-android-undeploy))))
 
+(defun android-insert-linearlayout ()
+  "Insert LinearLayout"
+  (interactive)
+  (let
+      ((linearlayout (s-join "\n" '(
+                      "<LinearLayout"
+                             "xmlns:android=\"http://schemas.android.com/apk/res/android\""
+                             "xmlns:tools=\"http://schemas.android.com/tools\""
+                             "android:layout_width=\"match_parent\""
+                             "android:layout_height=\"match_parent\""
+                             "android:orientation=\"horizontal\">"
+                             ""
+                             "</LinearLayout>")))
+       (start (point)))
+    (insert linearlayout)
+    (indent-region start (point))))
+
+(defun android-insert-textview (text)
+  "Insert a TextView"
+  (interactive (progn (list (read-string "input text property: " nil))))
+  (let
+      ((textview (format (s-join "\n" '("<TextView "
+                                        "android:layout_width=\"wrap_content\""
+                                        "android:layout_height=\"wrap_content\""
+                                        "android:text=\"%s\""
+                                        "/>")) text))
+       (start (point)))
+    (insert textview)
+    (indent-region start (point))))
+
+(defun android-insert-editview (name)
+  "insert EditText"
+  (interactive (progn (list (read-string "input id property: " nil))))
+  (let ((editview (format
+                   (s-join "\n"
+                           '("<EditText android:id=\"@+id/%s\""
+                             "android:layout_width=\"wrap_content\""
+                             "android:layout_height=\"wrap_content\""
+                             "android:hint=\"@string/%s\" />")) name name))
+        (start (point)))
+    (insert editview)
+    (indent-region start (point))))
+
+(defun android-insert-button (button)
+  "insert EditText"
+  (interactive (progn (list (read-string "input id property: " nil))))
+  (let ((editview (format
+                   (s-join "\n"
+                           '("<Button"
+                             "android:layout_width=\"wrap_content\""
+                             "android:layout_height=\"wrap_content\""
+                             "android:text=\"@string/%s\" />")) button))
+        (start (point)))
+    (insert editview)
+    (indent-region start (point))))
+
 (defconst android-mode-keys
   '(("d" . android-start-ddms)
     ("e" . android-start-emulator)
